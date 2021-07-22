@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Score scoreScript;
+
     public bool CanMove { get; set; } = true;
     private bool IsSprinting => canSprint && Input.GetKey(sprintKey);
     private bool ShouldJump => Input.GetKeyDown(jumpKey) && controller.isGrounded;
@@ -35,7 +37,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 standingCenter = new Vector3(0, 0, 0);
     private bool isCrouching;
     private bool duringCrouchAnimation;
-
+    [Header("Shooting")]
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private Transform firePoint;
+    [Header("General")]
     private Camera playerCamera;
     private CharacterController controller;
     private float rotationX = 0.0f;
@@ -68,6 +73,11 @@ public class PlayerController : MonoBehaviour
             }
 
             Extra();
+
+            if (Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                Shoot();
+            }
         }
     }
 
@@ -113,6 +123,15 @@ public class PlayerController : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
     }
 
+    private void Shoot()
+    {
+        GameObject a = Instantiate(bullet, firePoint.position, firePoint.rotation) as GameObject;
+        a.transform.SetParent(GameObject.Find("Clones").transform);
+        Physics.IgnoreCollision(a.GetComponent<Collider>(), GetComponent<Collider>());
+
+        scoreScript.UpdateShotsText(1);
+    }
+
     private IEnumerator CrouchStand()
     {
         if (isCrouching && Physics.Raycast(playerCamera.transform.position, Vector3.up, 1f))                    // if crouching and something is above player, you can't stand up
@@ -139,7 +158,5 @@ public class PlayerController : MonoBehaviour
         isCrouching = !isCrouching;
 
         duringCrouchAnimation = false;
-
     }
-
 }

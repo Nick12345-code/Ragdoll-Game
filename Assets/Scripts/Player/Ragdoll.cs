@@ -40,7 +40,7 @@ public class Ragdoll : MonoBehaviour
         RaycastHit hitInfo = new RaycastHit();
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         bool hit = Physics.Raycast(ray, out hitInfo);
-        Debug.DrawRay(ray.origin, ray.direction * 50, Color.blue);
+        Debug.DrawRay(ray.origin, ray.direction * 0.1f, Color.blue);
 
         if (hit)
         {
