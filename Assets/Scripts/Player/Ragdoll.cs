@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Ragdoll : MonoBehaviour
 {
+    [SerializeField] private Camera cam;
     [SerializeField] private float forceAmount;
     [SerializeField] private Rigidbody selectedRigidbody;
     [SerializeField] private float selectionDistance;
@@ -27,7 +28,7 @@ public class Ragdoll : MonoBehaviour
     {
         if (selectedRigidbody)
         {
-            Vector3 mousePositionOffset = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, selectionDistance)) - originalScreenTargetPosition;
+            Vector3 mousePositionOffset = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, selectionDistance)) - originalScreenTargetPosition;
             selectedRigidbody.velocity = (originalRigidbodyPos + mousePositionOffset - selectedRigidbody.transform.position) * forceAmount * Time.deltaTime;
         }
 
@@ -37,7 +38,7 @@ public class Ragdoll : MonoBehaviour
     Rigidbody GetRigidbodyFromMouseClick()
     {
         RaycastHit hitInfo = new RaycastHit();
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         bool hit = Physics.Raycast(ray, out hitInfo);
         Debug.DrawRay(ray.origin, ray.direction * 50, Color.blue);
 
@@ -46,7 +47,7 @@ public class Ragdoll : MonoBehaviour
             if (hitInfo.collider.gameObject.GetComponent<Rigidbody>())
             {
                 selectionDistance = Vector3.Distance(ray.origin, hitInfo.point);
-                originalScreenTargetPosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, selectionDistance));
+                originalScreenTargetPosition = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, selectionDistance));
                 originalRigidbodyPos = hitInfo.collider.transform.position;
                 return hitInfo.collider.gameObject.GetComponent<Rigidbody>();
             }
