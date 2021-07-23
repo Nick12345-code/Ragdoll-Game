@@ -17,6 +17,7 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
+        // if distance between the fire point and the bullet is greater than specified, the bullet will be destroyed (else bullet keeps moving forward)
         if (Vector3.Distance(firePoint.position, transform.position) > maxDistance)
         {
             Destroy(this.gameObject);

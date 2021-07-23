@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // CanMove property controls whether the player character operates
         if (CanMove)
         {
             Movement();
@@ -81,6 +82,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // gets the vertical and horizontal axis as vectors and applies speed depending on which one is activated with WASD
     private void Movement()
     {
         currentInput = new Vector2((isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Vertical"), (isCrouching ? crouchSpeed : IsSprinting ? sprintSpeed : walkSpeed) * Input.GetAxis("Horizontal"));
@@ -89,6 +91,7 @@ public class PlayerController : MonoBehaviour
         moveDirection.y = moveDirectionY;
     }
 
+    // gets the camera's X & Y axises however Y is clamped to make the rotation realistic compared to the rotation of a human head
     private void Look()
     {
         rotationX -= Input.GetAxis("Mouse Y") * lookSpeed;
@@ -97,6 +100,7 @@ public class PlayerController : MonoBehaviour
         transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
     }
 
+    // jump force controls how high the player can jump
     private void Jump()
     {
         if (ShouldJump)
@@ -105,6 +109,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // crouching
     private void Crouch()
     {
         if (ShouldCrouch)
@@ -115,6 +120,7 @@ public class PlayerController : MonoBehaviour
 
     private void Extra()
     {
+        // applies gravity if the player isn't on the ground
         if (!controller.isGrounded)
         {
             moveDirection.y -= gravity * Time.deltaTime;
@@ -123,18 +129,19 @@ public class PlayerController : MonoBehaviour
         controller.Move(moveDirection * Time.deltaTime);
     }
 
+    // spawns a bullet which ignores the player collider as the bullet fires from within the player
     private void Shoot()
     {
         GameObject a = Instantiate(bullet, firePoint.position, firePoint.rotation) as GameObject;
         a.transform.SetParent(GameObject.Find("Clones").transform);
         Physics.IgnoreCollision(a.GetComponent<Collider>(), GetComponent<Collider>());
-
-        scoreScript.UpdateShotsText(1);
+        scoreScript.UpdateShots(1);
     }
 
+    // if crouching and something is above player, you can't stand up
     private IEnumerator CrouchStand()
     {
-        if (isCrouching && Physics.Raycast(playerCamera.transform.position, Vector3.up, 1f))                    // if crouching and something is above player, you can't stand up
+        if (isCrouching && Physics.Raycast(playerCamera.transform.position, Vector3.up, 1f))                    
             yield break;
 
         duringCrouchAnimation = true;
