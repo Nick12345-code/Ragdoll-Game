@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Score : MonoBehaviour
 {
-    public HoleTrigger holeTrigger;
+    public CompleteLevel level;
     [Header("Score")]
     [SerializeField] private int score;
     [SerializeField] private Text scoreText;
@@ -22,7 +22,7 @@ public class Score : MonoBehaviour
     {
         UpdateTime();
 
-        if (holeTrigger.scored == true)
+        if (level.levelCompleted == true)
         {
             if (scoreUpdated == false)
             {
@@ -44,8 +44,15 @@ public class Score : MonoBehaviour
     // updates the count down timer
     private void UpdateTime()
     {
-        time = timeLost -= Time.deltaTime;
-        timeText.text = time.ToString("0");
+        if (time <= 0)
+        {
+            time = 0f;
+        }
+        else
+        {
+            time = timeLost -= Time.deltaTime;
+            timeText.text = time.ToString("0");
+        }
     }
 
     // updates the score the player has earned
