@@ -5,13 +5,16 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public Shoot shoot;
-    [SerializeField] private Transform firePoint;
+    private Transform firePoint;
+    private Rigidbody rb;
     [SerializeField] private float maxDistance;
+    [SerializeField] private float speed;
 
     private void Start()
     {
         firePoint = GameObject.Find("FirePoint").GetComponent<Transform>();
         shoot = GameObject.Find("Shoot").GetComponent<Shoot>();
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -21,10 +24,12 @@ public class Bullet : MonoBehaviour
         {
             Destroy(this.gameObject);
             shoot.bulletCount = 0;
+            shoot.mass = shoot.minMass;
         }
         else
         {
-            transform.Translate(Vector3.forward * shoot.speed * Time.deltaTime);
+            rb.AddForce(transform.forward * speed);
+            rb.mass = shoot.mass;
         }
     }
 }
