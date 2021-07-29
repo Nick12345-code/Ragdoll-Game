@@ -15,7 +15,6 @@ public class Score : MonoBehaviour
     [SerializeField] private Text shotsText;
     [Header("Timer")]
     [SerializeField] private float time;
-    [SerializeField] private float timeLost;
     [SerializeField] private Text timeText;
 
     private void Update()
@@ -50,7 +49,7 @@ public class Score : MonoBehaviour
         }
         else
         {
-            time = timeLost -= Time.deltaTime;
+            time = time -= Time.deltaTime;
             timeText.text = time.ToString("0");
         }
     }

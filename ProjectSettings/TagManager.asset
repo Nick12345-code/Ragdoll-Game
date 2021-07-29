@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ragdoll
   - Bullet
+  - Ball
   layers:
   - Default
   - TransparentFX
