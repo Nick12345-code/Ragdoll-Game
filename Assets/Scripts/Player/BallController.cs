@@ -51,13 +51,6 @@ public class BallController : MonoBehaviour
                 }
             } 
         }
-
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            holdingBall = true;
-            ball.GetComponent<Rigidbody>().useGravity = false;
-            power = minPower;
-        }
     }
 
     private void ChargeUp()
@@ -88,7 +81,15 @@ public class BallController : MonoBehaviour
                 ball.GetComponent<Rigidbody>().useGravity = true;
                 ball.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * power, ForceMode.Impulse);            
                 score.UpdateShots(1);
+                Invoke("ReturnBall", 5);
             }
         }
+    }
+
+    private void ReturnBall()
+    {
+        holdingBall = true;
+        ball.GetComponent<Rigidbody>().useGravity = false;
+        power = minPower;
     }
 }
