@@ -14,6 +14,7 @@ public class Ragdoller : MonoBehaviour
 
     private void Update()
     {
+        // if ragdoll moves, enable ragdoll
         if (startingPosition != transform.position)
         {
             EnableRagdoll();
@@ -22,6 +23,7 @@ public class Ragdoller : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // if ragdoll is hit by ball, enable ragdoll
         if (other.GetComponent<Collider>().CompareTag("Ball"))
         {
             EnableRagdoll();
@@ -30,8 +32,10 @@ public class Ragdoller : MonoBehaviour
 
     void EnableRagdoll()
     {
+        // gets all the rigidbodies within the ragdoll
         Rigidbody[] bodies = GetComponentsInChildren<Rigidbody>();
 
+        // for each rigidbody make in kinematic (movable)
         foreach (var body in bodies)
         {
             body.isKinematic = false;
@@ -40,8 +44,10 @@ public class Ragdoller : MonoBehaviour
 
     void DisableRagdoll()
     {
+        // gets all the rigidbodies within the ragdoll
         Rigidbody[] bodies = GetComponentsInChildren<Rigidbody>();
 
+        // for each rigidbody make in non-kinematic (immovable)
         foreach (var body in bodies)
         {
             body.isKinematic = true;

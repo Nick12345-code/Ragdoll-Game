@@ -13,6 +13,7 @@ public class Tutorial : MonoBehaviour
 
     private void Update()
     {
+        // if 'i' button is pressed, activate/deactivate info
         if (Input.GetKeyDown(KeyCode.I))
         {
             if (info.activeSelf)
